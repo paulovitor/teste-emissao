@@ -1,0 +1,27 @@
+version: '2'
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: teste-emissao
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: mysql
+      MYSQL_ROOT_PASSWORD: root
+  wildfly:
+    build: .
+    container_name: teste-emissao
+    links:
+      - mysql:db
+    environment:
+      - MYSQL_URI=db:3306
+    ports:
+      - 8080:8080
+      - 9990:9990
+      - 8787:8787
+    depends_on:
+      - mysql
+
+# Rodar mysql localhost: docker-compose run --service-ports mysql
