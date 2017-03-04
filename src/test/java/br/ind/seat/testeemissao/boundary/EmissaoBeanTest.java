@@ -5,36 +5,37 @@
  */
 package br.ind.seat.testeemissao.boundary;
 
+import br.ind.seat.testeemissao.control.EmissorDeSenha;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
- *
  * @author matheus
  */
 public class EmissaoBeanTest {
-    
-    public EmissaoBeanTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
+
+    private EmissaoBean emissaoBean;
+    private EmissorDeSenha emissorDeSenha;
+
     @Before
     public void setUp() {
+        emissorDeSenha = mock(EmissorDeSenha.class);
+
+        emissaoBean = new EmissaoBean();
+
+        emissaoBean.setEmissorDeSenha(emissorDeSenha);
     }
-    
+
     @After
     public void tearDown() {
+        emissorDeSenha = null;
+
+        emissaoBean = null;
     }
 
     /**
@@ -42,9 +43,30 @@ public class EmissaoBeanTest {
      */
     @Test
     public void testEmiteGeral() {
-        System.out.println("emiteGeral");
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        // dado
+        String senha = "GERAL-1";
+        when(emissorDeSenha.geraSenhaGeral()).thenReturn(senha);
+
+        // quando
+        emissaoBean.emiteGeral();
+
+        // entao
+        assertEquals(senha, emissaoBean.getSenhaEmitida());
     }
-    
+
+    /**
+     * Test of emitePreferencial method, of class EmissaoBean.
+     */
+    @Test
+    public void testEmitePreferencial() {
+        // dado
+        String senha = "PREFERENCIAL-1";
+        when(emissorDeSenha.geraSenhaPreferencial()).thenReturn(senha);
+
+        // quando
+        emissaoBean.emitePreferencial();
+
+        // entao
+        assertEquals(senha, emissaoBean.getSenhaEmitida());
+    }
 }

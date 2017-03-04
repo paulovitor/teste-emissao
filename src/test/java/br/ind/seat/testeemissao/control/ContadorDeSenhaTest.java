@@ -6,41 +6,48 @@
 package br.ind.seat.testeemissao.control;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
- *
  * @author matheus
  */
 public class ContadorDeSenhaTest {
-    
-    public ContadorDeSenhaTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
+
+    private ContadorDeSenha contadorDeSenha;
+
     @Before
     public void setUp() {
+        contadorDeSenha = new ContadorDeSenha();
+        contadorDeSenha.getUltimaSenhaGeral();
+        contadorDeSenha.getUltimaSenhaPreferencial();
     }
-    
+
     @After
     public void tearDown() {
+        contadorDeSenha = null;
     }
 
     @Test
-    public void testSomeMethod() {
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testGetUltimaSenhaGeral() {
+        // quando
+        int ultimaSenha = contadorDeSenha.getUltimaSenhaGeral();
+
+        // entao
+        assertNotNull(ultimaSenha);
+        assertEquals(2, ultimaSenha);
     }
-    
+
+    @Test
+    public void testGetUltimaSenhaPreferencial() {
+        // quando
+        int ultimaSenha = contadorDeSenha.getUltimaSenhaPreferencial();
+
+        // entao
+        assertNotNull(ultimaSenha);
+        assertEquals(2, ultimaSenha);
+    }
 }

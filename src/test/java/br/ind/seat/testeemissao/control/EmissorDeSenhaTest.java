@@ -5,42 +5,77 @@
  */
 package br.ind.seat.testeemissao.control;
 
+import br.ind.seat.testeemissao.entity.Senha;
+import br.ind.seat.testeemissao.entity.TipoSenha;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import javax.persistence.EntityManager;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
- *
  * @author matheus
  */
 public class EmissorDeSenhaTest {
-    
-    public EmissorDeSenhaTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
+
+    private ContadorDeSenha contadorDeSenha;
+    private EntityManager entityManager;
+
+    private EmissorDeSenha emissorDeSenha;
+
     @Before
     public void setUp() {
+        emissorDeSenha = new EmissorDeSenha();
+
+        contadorDeSenha = mock(ContadorDeSenha.class);
+        entityManager = mock(EntityManager.class);
+
+        emissorDeSenha.setContadorDeSenha(contadorDeSenha);
+        emissorDeSenha.setEntityManager(entityManager);
     }
-    
+
     @After
     public void tearDown() {
+        contadorDeSenha = null;
+        entityManager = null;
+
+        emissorDeSenha = null;
     }
 
     @Test
-    public void testSomeMethod() {
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testGeraSenhaGeral() {
+        // dado
+        Senha entity = new Senha(2, TipoSenha.GERAL);
+
+        when(contadorDeSenha.getUltimaSenhaGeral()).thenReturn(2);
+        when(entityManager.merge(entity)).thenReturn(entity);
+
+        // quando
+        String senha = emissorDeSenha.geraSenhaGeral();
+
+        // entao
+        assertNotNull(senha);
+        assertEquals(entity.toString(), senha);
     }
-    
+
+    @Test
+    public void testGeraSenhaPreferencial() {
+        // dado
+        Senha entity = new Senha(2, TipoSenha.PREFERENCIAL);
+
+        when(contadorDeSenha.getUltimaSenhaPreferencial()).thenReturn(2);
+        when(entityManager.merge(entity)).thenReturn(entity);
+
+        // quando
+        String senha = emissorDeSenha.geraSenhaPreferencial();
+
+        // entao
+        assertNotNull(senha);
+        assertEquals(entity.toString(), senha);
+    }
 }
